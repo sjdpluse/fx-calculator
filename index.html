@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<meta name="description" content="ماشین‌حساب مدیریت ریسک، حجم لات، اسپرد و استاپ‌لاس برای جفت‌ارزهای اصلی فارکس و طلا.">
+<title>FX Calculator — ماشین‌حساب فارکس و طلا</title>
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#101827;--panel2:#151f31;--line:#26344b;--text:#edf3ff;--muted:#98a8c1;--accent:#69e0bd;--blue:#8ab4ff;--red:#ff7c88;--green:#6de0ad}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% -10%,#172a45 0,transparent 45%),var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:28px 18px 52px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#6de0bd,#7ca9ff);display:grid;place-items:center;color:#07111d;font-size:21px;font-weight:900}.brand h1{font-size:clamp(20px,3vw,28px);margin:0;letter-spacing:-.5px}.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}.badge{border:1px solid var(--line);color:var(--accent);padding:6px 10px;border-radius:999px;font-size:12px;white-space:nowrap}.intro{margin:0 0 20px;color:var(--muted);font-size:14px}.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);gap:18px;align-items:start}.card{background:linear-gradient(180deg,rgba(18,28,44,.98),rgba(13,21,35,.98));border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 14px 40px #0002}.card h2{font-size:17px;margin:0 0 18px;display:flex;align-items:center;gap:9px}.num{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:#20364a;color:var(--accent);font-size:13px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;color:#b8c6db;font-size:12px;margin-bottom:7px}input,select{width:100%;min-width:0;border:1px solid #304059;background:#0b1321;color:var(--text);border-radius:10px;padding:11px 12px;outline:none;transition:border .2s,box-shadow .2s}input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #69e0bd1b}input[readonly]{color:#a8bad2;background:#111c2b}.hint{font-size:11px;color:var(--muted);margin-top:5px}.seg{display:grid;grid-template-columns:1fr 1fr;gap:7px}.seg button{border:1px solid var(--line);border-radius:10px;background:#0b1321;color:var(--muted);padding:10px}.seg button.active{border-color:var(--accent);background:#14302f;color:var(--accent)}.divider{height:1px;background:var(--line);margin:20px 0}.subhead{font-size:13px;color:#d7e3f5;margin:0 0 12px}.results{display:grid;gap:12px}.hero{border:1px solid #315d5a;background:linear-gradient(130deg,#12302e,#132238);border-radius:16px;padding:17px}.hero .k{font-size:12px;color:#b0d8d0}.hero .v{font-size:clamp(27px,4vw,37px);font-weight:800;letter-spacing:-1px;margin:2px 0}.hero .s{font-size:12px;color:#a9c3d2}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:13px;border-radius:13px;background:var(--panel2);border:1px solid #26364b;min-width:0}.stat .k{font-size:11px;color:var(--muted)}.stat .v{font-size:19px;font-weight:750;overflow-wrap:anywhere}.stat .s{font-size:11px;color:var(--muted)}.good{color:var(--green)}.bad{color:var(--red)}.note{font-size:12px;color:var(--muted);border-right:3px solid #5e9b9b;padding:9px 12px;background:#111f2b;border-radius:7px}.warn{border-right-color:#e3b15c;color:#d5c8a8}.hidden{display:none!important}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:22px}.reset{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:7px 12px;font-size:12px}.sectiontop{display:flex;justify-content:space-between;align-items:center;gap:10px}.pill{font-size:11px;border-radius:7px;padding:4px 7px;background:#1b293b;color:#9eb4ce}.copy{border:0;border-radius:10px;background:var(--accent);color:#08151b;padding:11px 15px;font-weight:800;width:100%}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.results-card{order:2}.top{align-items:flex-start}.card{padding:18px}}@media(max-width:420px){.wrap{padding:18px 11px 35px}.fields{gap:11px}.card{padding:15px}.badge{font-size:10px}.stats{gap:8px}.stat{padding:10px}.stat .v{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="logo">FX</div><div><h1>FX Calculator</h1><p>ماشین‌حساب اسپرد، لات و استاپ‌لاس</p></div></div><span class="badge">فارکس + طلا · حساب USD</span></header>
+<p class="intro">اطلاعات معامله را وارد کن؛ حجم مناسب، فاصله استاپ، هزینه اسپرد و زیان احتمالی به‌صورت خودکار محاسبه می‌شود.</p>
+<div class="layout">
+<section class="card">
+<div class="sectiontop"><h2><span class="num">۱</span> مشخصات معامله</h2><button id="reset" class="reset" type="button">بازنشانی</button></div>
+<div class="fields">
+<div class="field"><label for="symbol">نماد معاملاتی</label><select id="symbol">
+<optgroup label="جفت‌ارزهای اصلی"><option value="EURUSD">EUR/USD</option><option value="GBPUSD">GBP/USD</option><option value="AUDUSD">AUD/USD</option><option value="NZDUSD">NZD/USD</option><option value="USDJPY">USD/JPY</option><option value="USDCHF">USD/CHF</option><option value="USDCAD">USD/CAD</option></optgroup>
+<optgroup label="فلزات"><option value="XAUUSD">طلا (XAU/USD)</option></optgroup></select></div>
+<div class="field"><label>جهت معامله</label><div class="seg"><button type="button" data-side="buy" class="active" id="buy">خرید (Buy)</button><button type="button" data-side="sell" id="sell">فروش (Sell)</button></div></div>
+<div class="field"><label for="bid">قیمت Bid (فروش)</label><input id="bid" type="number" inputmode="decimal" step="any" value="1.08350"></div>
+<div class="field"><label for="ask">قیمت Ask (خرید)</label><input id="ask" type="number" inputmode="decimal" step="any" value="1.08360"></div>
+<div class="field"><label for="lot">حجم لات</label><input id="lot" type="number" inputmode="decimal" min="0.01" step="0.01" value="0.20"><div class="hint">حجم دستی؛ در حالت ریسک، لات پیشنهادی هم محاسبه می‌شود.</div></div>
+<div class="field"><label for="risk">حداکثر ریسک (USD)</label><input id="risk" type="number" inputmode="decimal" min="0" step="any" value="20"><div class="hint">بودجه زیان موردنظر برای یک معامله</div></div>
+</div>
+<div class="divider"></div>
+<h3 class="subhead">۲. تعیین استاپ‌لاس</h3>
+<div class="fields">
+<div class="field full"><label>روش تعیین استاپ</label><div class="seg"><button type="button" data-mode="distance" id="modeDistance" class="active">فاصله استاپ</button><button type="button" data-mode="price" id="modePrice">قیمت استاپ</button></div></div>
+<div class="field" id="distanceWrap"><label for="stopPips">فاصله استاپ (پیپ)</label><input id="stopPips" type="number" inputmode="decimal" min="0.1" step="any" value="10"></div>
+<div class="field hidden" id="priceWrap"><label for="stopPrice">قیمت استاپ‌لاس</label><input id="stopPrice" type="number" inputmode="decimal" step="any" placeholder="قیمت استاپ را وارد کن"></div>
+<div class="field"><label for="commission">کمیسیون رفت‌وبرگشت (USD / هر لات)</label><input id="commission" type="number" inputmode="decimal" min="0" step="any" value="0"><div class="hint">مجموع کمیسیون بازکردن و بستن معامله برای یک لات؛ اگر حساب بدون کمیسیون است صفر بگذار.</div></div>
+<div class="field"><label for="goldContract">اندازه قرارداد طلا (اونس/لات)</label><input id="goldContract" type="number" inputmode="decimal" min="0.01" step="any" value="100"><div class="hint">طبق مشخصات نماد بروکر تنظیم کن.</div></div>
+</div>
+<div class="divider"></div>
+<div class="note warn">قیمت‌ها زنده نیستند و به‌صورت دستی وارد می‌شوند. برای جفت‌ارزها یک پیپ معمولاً 0.0001 و برای USD/JPY برابر 0.01 است. در این ماشین‌حساب، حرکت 0.01 دلار طلا یک واحد حرکتی محاسباتی است؛ ارزش واقعی به اندازه قرارداد بروکر وابسته است.</div>
+</section>
+<aside class="card results-card">
+<h2><span class="num">۳</span> نتیجه محاسبه</h2>
+<div class="results">
+<div class="hero"><div class="k">زیان تخمینی تا استاپ (با هزینه‌ها)</div><div class="v" id="totalLoss">$22.00</div><div class="s" id="riskStatus">بر اساس لات واردشده و قیمت‌های فعلی</div></div>
+<div class="stats">
+<div class="stat"><div class="k">اسپرد فعلی</div><div class="v" id="spreadPips">1.0 pip</div><div class="s" id="spreadPrice">0.00010 اختلاف قیمت</div></div>
+<div class="stat"><div class="k">هزینه اسپرد</div><div class="v" id="spreadCost">$2.00</div><div class="s">هزینه تقریبی ورود</div></div>
+<div class="stat"><div class="k">ارزش هر پیپ برای لات انتخابی</div><div class="v" id="pipValue">$2.00</div><div class="s" id="pipUnit">برای هر پیپ</div></div>
+<div class="stat"><div class="k">فاصله استاپ واقعی</div><div class="v" id="actualStop">10.0 pip</div><div class="s" id="stopPriceOut">قیمت استاپ: —</div></div>
+<div class="stat"><div class="k">زیان حرکت قیمت تا استاپ</div><div class="v" id="priceLoss">$20.00</div><div class="s">بدون هزینه‌های معاملاتی</div></div>
+<div class="stat"><div class="k">کمیسیون تخمینی</div><div class="v" id="commissionCost">$0.00</div><div class="s">رفت‌وبرگشت</div></div>
+</div>
+<div class="divider"></div>
+<h3 class="subhead">حجم پیشنهادی بر اساس ریسک</h3>
+<div class="stats">
+<div class="stat"><div class="k">لات پیشنهادی</div><div class="v good" id="suggestedLot">0.20</div><div class="s">با احتساب اسپرد و کمیسیون</div></div>
+<div class="stat"><div class="k">ریسک کل با لات پیشنهادی</div><div class="v" id="suggestedLoss">$20.00</div><div class="s">هدف: حداکثر ریسک واردشده</div></div>
+</div>
+<button class="copy" id="copy" type="button" style="margin-top:14px">کپی خلاصه معامله</button>
+<p id="copyStatus" class="hint" aria-live="polite"></p>
+</div>
+</aside>
+</div>
+<p class="footer">ابزار محاسباتی آموزشی است؛ اجرای استاپ در قیمت دقیق تضمین نمی‌شود. لغزش قیمت، تغییر اسپرد، سواپ و کمیسیون‌های اضافی می‌توانند زیان واقعی را افزایش دهند.</p>
+</div>
+<script>
+(()=> {
+const $=id=>document.getElementById(id);
+const fields=['symbol','bid','ask','lot','risk','stopPips','stopPrice','commission','goldContract'];
+let side='buy',mode='distance';
+const fmt=(n,d=2)=>Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}):'—';
+const usd=n=>Number.isFinite(n)?(n<0?'−':'')+'$'+fmt(Math.abs(n),2):'—';
+const get=id=>Number($(id).value);
+function config(){
+ const s=$('symbol').value, gold=s==='XAUUSD', jpy=s==='USDJPY', pip=gold?0.01:(jpy?0.01:0.0001);
+ return {s,gold,jpy,pip,contract:gold?get('goldContract'):100000};
+}
+function pipValuePerLot(c,price){
+ if(c.gold)return c.contract*c.pip;
+ if(c.s==='EURUSD'||c.s==='GBPUSD'||c.s==='AUDUSD'||c.s==='NZDUSD')return 10;
+ // USD is base; pip P/L is in quote currency and converted back to USD.
+ const p=Math.max(price,Number.EPSILON);
+ if(c.s==='USDJPY')return 1000/p;
+ if(c.s==='USDCHF')return 10/p;
+ if(c.s==='USDCAD')return 10/p;
+ return 10;
+}
+function calc(){
+ const c=config(),bid=get('bid'),ask=get('ask'),lot=get('lot'),risk=get('risk'),comm=Math.max(0,get('commission'));
+ const valid=Number.isFinite(bid)&&Number.isFinite(ask)&&bid>0&&ask>0&&ask>=bid&&Number.isFinite(lot)&&lot>0&&Number.isFinite(risk)&&risk>0&&c.contract>0;
+ if(!valid){$('riskStatus').textContent='قیمت‌ها، لات و ریسک را بررسی کن.';return}
+ const mid=(bid+ask)/2, spreadPrice=ask-bid, spreadUnits=spreadPrice/c.pip;
+ const pv=pipValuePerLot(c,mid), pvLot=pv*lot;
+ let entry=side==='buy'?ask:bid, slDistance;
+ if(mode==='distance'){
+  slDistance=Math.max(0,get('stopPips'))*c.pip;
+  $('stopPrice').value=fmt(side==='buy'?entry-slDistance:entry+slDistance,c.gold?2:(c.jpy?3:5));
+ }else{
+  const sl=get('stopPrice');
+  if(!Number.isFinite(sl)||sl<=0){$('riskStatus').textContent='قیمت استاپ‌لاس معتبر وارد کن.';return}
+  // Long stops trigger on Bid, short stops on Ask.
+  slDistance=side==='buy'?bid-sl:sl-ask;
+  if(slDistance<=0){$('riskStatus').textContent='استاپ برای این جهت معامله در سمت نادرست قیمت قرار دارد.';return}
+ }
+ const stopPips=slDistance/c.pip;
+ const moveLoss=stopPips*pv*lot;
+ const spreadCost=spreadUnits*pv*lot;
+ const commCost=comm*lot;
+ // If stop price was entered, use actual distance from entry to stop. This includes spread in the entry-to-stop movement.
+ // Report price movement loss and transaction costs separately; avoid adding spread twice to stop loss.
+ const total=moveLoss+commCost;
+ const perLotRisk=stopPips*pv+comm;
+ const suggested=perLotRisk>0?Math.max(0,risk/perLotRisk):0;
+ const suggestTotal=suggested*perLotRisk;
+ $('spreadPips').textContent=fmt(spreadUnits,c.gold?2:1)+' '+(c.gold?'unit':'pip');
+ $('spreadPrice').textContent=fmt(spreadPrice,c.gold?2:(c.jpy?3:5))+' اختلاف قیمت';
+ $('spreadCost').textContent=usd(spreadCost);
+ $('pipValue').textContent=usd(pvLot);
+ $('pipUnit').textContent=c.gold?'ارزش حرکت 0.01 قیمت برای لات انتخابی':'ارزش هر پیپ برای لات انتخابی';
+ $('actualStop').textContent=fmt(stopPips,2)+' '+(c.gold?'unit':'pip');
+ $('stopPriceOut').textContent='قیمت استاپ: '+fmt(side==='buy'?entry-slDistance:entry+slDistance,c.gold?2:(c.jpy?3:5));
+ $('priceLoss').textContent=usd(moveLoss);
+ $('commissionCost').textContent=usd(commCost);
+ $('totalLoss').textContent=usd(total);
+ $('totalLoss').className='v '+(total>risk?'bad':'good');
+ $('riskStatus').textContent=(total>risk?'بالاتر از بودجه ریسک واردشده':'در محدوده بودجه ریسک')+' · بودجه: '+usd(risk);
+ $('suggestedLot').textContent=fmt(suggested,3)+' lot';
+ $('suggestedLoss').textContent=usd(suggestTotal);
+ window.lastCalc={symbol:c.s,side,entry,stop:side==='buy'?entry-slDistance:entry+slDistance,lot,spreadUnits,spreadCost,stopPips,moveLoss,commCost,total,risk,suggested,suggestTotal};
+}
+function setSide(v){side=v;$('buy').classList.toggle('active',v==='buy');$('sell').classList.toggle('active',v==='sell');calc()}
+function setMode(v){mode=v;$('modeDistance').classList.toggle('active',v==='distance');$('modePrice').classList.toggle('active',v==='price');$('distanceWrap').classList.toggle('hidden',v!=='distance');$('priceWrap').classList.toggle('hidden',v!=='price');calc()}
+$('buy').addEventListener('click',()=>setSide('buy'));$('sell').addEventListener('click',()=>setSide('sell'));
+$('modeDistance').addEventListener('click',()=>setMode('distance'));$('modePrice').addEventListener('click',()=>setMode('price'));
+fields.forEach(id=>$(id).addEventListener('input',calc));$('symbol').addEventListener('change',()=>{
+ const s=$('symbol').value;
+ if(s==='XAUUSD'){$('bid').value='2300.00';$('ask').value='2300.30';$('stopPips').value='300'}
+ else if(s==='USDJPY'){$('bid').value='150.120';$('ask').value='150.130';$('stopPips').value='10'}
+ else if(s==='USDCHF'){$('bid').value='0.90000';$('ask').value='0.90010';$('stopPips').value='10'}
+ else if(s==='USDCAD'){$('bid').value='1.35000';$('ask').value='1.35010';$('stopPips').value='10'}
+ else {$('bid').value='1.08350';$('ask').value='1.08360';$('stopPips').value='10'}
+ calc();
+});
+$('reset').addEventListener('click',()=>{ $('symbol').value='EURUSD';$('bid').value='1.08350';$('ask').value='1.08360';$('lot').value='0.20';$('risk').value='20';$('stopPips').value='10';$('stopPrice').value='';$('commission').value='0';$('goldContract').value='100';setSide('buy');setMode('distance');calc()});
+$('copy').addEventListener('click',async()=>{
+ calc();const d=window.lastCalc;if(!d)return;
+ const textOut='FX Calculator\nSymbol: '+d.symbol+'\nSide: '+d.side.toUpperCase()+'\nEntry: '+d.entry+'\nStop: '+d.stop+'\nLot: '+fmt(d.lot,2)+'\nSpread: '+fmt(d.spreadUnits,2)+'\nSpread cost: '+usd(d.spreadCost)+'\nStop distance: '+fmt(d.stopPips,2)+'\nPrice loss: '+usd(d.moveLoss)+'\nCommission: '+usd(d.commCost)+'\nEstimated total: '+usd(d.total)+'\nSuggested lot for risk '+usd(d.risk)+': '+fmt(d.suggested,3);
+ try{await navigator.clipboard.writeText(textOut);$('copyStatus').textContent='خلاصه معامله کپی شد.'}catch(e){$('copyStatus').textContent=textOut}
+});
+calc();
+})();
+</script>
+</body></html>
