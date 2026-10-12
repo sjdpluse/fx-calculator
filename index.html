@@ -101,7 +101,7 @@ function calc(){
   const sl=get('stopPrice');
   if(!Number.isFinite(sl)||sl<=0){$('riskStatus').textContent='قیمت استاپ‌لاس معتبر وارد کن.';return}
   // Long stops trigger on Bid, short stops on Ask.
-  slDistance=side==='buy'?bid-sl:sl-ask;
+  slDistance=side==='buy'?entry-sl:sl-entry;
   if(slDistance<=0){$('riskStatus').textContent='استاپ برای این جهت معامله در سمت نادرست قیمت قرار دارد.';return}
  }
  const stopPips=slDistance/c.pip;
