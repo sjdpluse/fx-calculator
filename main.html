@@ -3522,10 +3522,13 @@ if (document.documentElement.classList.contains('dark-mode')) {
         }
 
         const rawSuggested = riskBudget / perLotRisk;
-        const lotDecimals = Math.min(4, ((String(lotStep).split('.')[1] || '').length));
-        let suggestedLot = Math.floor((rawSuggested + 1e-10) / lotStep) * lotStep;
-        suggestedLot = Number(suggestedLot.toFixed(lotDecimals));
-        if (suggestedLot + 1e-10 < minLot) suggestedLot = 0;
+        const decimalsOf = value => (String(value).split('.')[1] || '').length;
+        const lotDecimals = Math.min(4, Math.max(decimalsOf(lotStep), decimalsOf(minLot)));
+        let suggestedLot = 0;
+        if (rawSuggested + 1e-10 >= minLot) {
+            suggestedLot = minLot + Math.floor((rawSuggested - minLot + 1e-10) / lotStep) * lotStep;
+            suggestedLot = Number(suggestedLot.toFixed(lotDecimals));
+        }
         const suggestedLoss = suggestedLot * perLotRisk;
         const actualRiskPct = totalLoss / balance * 100;
         const netReward = targetPips > 0 ? (targetPips * pipValue - commissionPerLot) * lot : NaN;
