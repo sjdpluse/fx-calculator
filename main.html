@@ -2681,6 +2681,151 @@
         .fng-bar.usd { background:linear-gradient(to right,#3b82f6,#94a3b8,#f59e0b) !important; }
     </style>
 <base target="_blank">
+<style>
+
+/* =========== ADVANCED TRADE RISK CALCULATOR =========== */
+.fxrisk-shell {
+    --fxr-panel: rgba(255,255,255,.94);
+    --fxr-panel2: #f3f7fb;
+    --fxr-field: #ffffff;
+    --fxr-line: #dbe5f0;
+    --fxr-text: #182638;
+    --fxr-muted: #64748b;
+    --fxr-accent: #087f70;
+    --fxr-blue: #1e64c8;
+    --fxr-good: #087f70;
+    --fxr-bad: #c7394c;
+    margin: 0 14px 18px;
+    color: var(--fxr-text);
+    font-family: inherit;
+    min-width: 0;
+}
+body.dark-mode .fxrisk-shell {
+    --fxr-panel: rgba(16,24,39,.96);
+    --fxr-panel2: #151f31;
+    --fxr-field: #0b1321;
+    --fxr-line: #26344b;
+    --fxr-text: #edf3ff;
+    --fxr-muted: #98a8c1;
+    --fxr-accent: #69e0bd;
+    --fxr-blue: #8ab4ff;
+    --fxr-good: #6de0ad;
+    --fxr-bad: #ff7c88;
+}
+.fxrisk-shell, .fxrisk-shell * { box-sizing: border-box; }
+.fxrisk-intro { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin:0 0 14px; }
+.fxrisk-intro-copy { min-width:0; }
+.fxrisk-eyebrow { display:flex; align-items:center; gap:7px; color:var(--fxr-accent); font-size:.64rem; font-weight:900; letter-spacing:.08em; margin-bottom:7px; }
+.fxrisk-intro h2 { color:var(--fxr-text); font-size:clamp(1.08rem,2.5vw,1.45rem); line-height:1.45; margin:0 0 5px; font-weight:900; }
+.fxrisk-intro p { color:var(--fxr-muted); font-size:.77rem; line-height:1.8; margin:0; max-width:620px; }
+.fxrisk-reset { flex-shrink:0; border:1px solid var(--fxr-line); border-radius:11px; background:var(--fxr-panel); color:var(--fxr-muted); font:inherit; font-size:.72rem; font-weight:800; padding:9px 11px; cursor:pointer; display:flex; gap:7px; align-items:center; }
+.fxrisk-reset:hover { border-color:var(--fxr-accent); color:var(--fxr-accent); }
+.fxrisk-disclaimer { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; margin-bottom:14px; border:1px solid rgba(225,166,71,.32); border-radius:13px; background:rgba(225,166,71,.08); color:var(--fxr-muted); font-size:.73rem; line-height:1.8; }
+.fxrisk-disclaimer i { margin-top:4px; color:#c68a25; }
+.fxrisk-disclaimer strong { color:var(--fxr-text); }
+.fxrisk-layout { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); gap:14px; align-items:start; }
+.fxrisk-panel { min-width:0; padding:17px; border:1px solid var(--fxr-line); border-radius:18px; background:var(--fxr-panel); box-shadow:0 12px 30px rgba(0,0,0,.055); }
+body.dark-mode .fxrisk-panel { box-shadow:0 16px 42px rgba(0,0,0,.16); }
+.fxrisk-panel-heading { display:flex; align-items:center; gap:10px; margin-bottom:15px; }
+.fxrisk-step { display:grid; place-items:center; flex-shrink:0; width:31px; height:31px; border:1px solid color-mix(in srgb, var(--fxr-accent) 30%, transparent); border-radius:10px; background:color-mix(in srgb, var(--fxr-accent) 11%, transparent); color:var(--fxr-accent); font-size:.7rem; font-weight:900; }
+.fxrisk-step-result { font-size:.85rem; }
+.fxrisk-panel-heading h3 { color:var(--fxr-text); font-size:.91rem; margin:0 0 2px; font-weight:900; }
+.fxrisk-panel-heading p { color:var(--fxr-muted); font-size:.68rem; margin:0; line-height:1.5; }
+.fxrisk-fields { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px 11px; }
+.fxrisk-field { min-width:0; }
+.fxrisk-field label { display:block; margin:0 0 6px; color:var(--fxr-muted); font-size:.69rem; font-weight:750; line-height:1.6; }
+.fxrisk-field input, .fxrisk-field select { display:block; width:100%; min-width:0; min-height:42px; padding:9px 10px; border:1px solid var(--fxr-line); border-radius:10px; outline:none; background:var(--fxr-field); color:var(--fxr-text); font:inherit; font-size:.78rem; direction:ltr; text-align:left; transition:border-color .2s, box-shadow .2s; }
+.fxrisk-field select { direction:rtl; text-align:right; }
+.fxrisk-field input:focus, .fxrisk-field select:focus { border-color:var(--fxr-accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--fxr-accent) 14%, transparent); }
+.fxrisk-field input::placeholder { color:var(--fxr-muted); opacity:.7; font-size:.72rem; }
+body.dark-mode .fxrisk-field input, body.dark-mode .fxrisk-field select { background:var(--fxr-field) !important; color:var(--fxr-text) !important; border-color:var(--fxr-line) !important; }
+.fxrisk-hint { display:block; color:var(--fxr-muted); font-size:.62rem; line-height:1.6; margin-top:5px; }
+.fxrisk-seg { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.fxrisk-seg button { min-width:0; min-height:42px; padding:8px 6px; border:1px solid var(--fxr-line); border-radius:10px; background:var(--fxr-field); color:var(--fxr-muted); font:inherit; font-size:.72rem; font-weight:800; cursor:pointer; transition:all .18s ease; }
+.fxrisk-seg button.active { background:color-mix(in srgb, var(--fxr-accent) 12%, var(--fxr-panel)); color:var(--fxr-accent); border-color:var(--fxr-accent); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--fxr-accent) 14%, transparent); }
+.fxrisk-mode-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:9px; margin:0 0 12px; color:var(--fxr-muted); font-size:.7rem; font-weight:750; }
+.fxrisk-mode-seg { min-width:min(100%,245px); }
+.fxrisk-mode-seg button { min-height:35px; padding:6px 8px; }
+.fxrisk-input-suffix { display:flex; align-items:center; gap:6px; }
+.fxrisk-input-suffix input { flex:1; }
+.fxrisk-input-suffix span { color:var(--fxr-muted); font-size:.68rem; direction:ltr; white-space:nowrap; }
+.fxrisk-divider { height:1px; background:var(--fxr-line); margin:19px 0; }
+.fxrisk-note { display:flex; gap:9px; align-items:flex-start; margin-top:15px; padding:10px 11px; border-radius:11px; background:var(--fxr-panel2); color:var(--fxr-muted); font-size:.67rem; line-height:1.8; }
+.fxrisk-note i { color:var(--fxr-accent); margin-top:4px; }
+.fxrisk-results-panel { position:sticky; top:72px; }
+.fxrisk-hero { padding:15px; border:1px solid color-mix(in srgb, var(--fxr-accent) 35%, var(--fxr-line)); border-radius:15px; background:linear-gradient(135deg,color-mix(in srgb, var(--fxr-accent) 11%, var(--fxr-panel)),color-mix(in srgb, var(--fxr-blue) 8%, var(--fxr-panel))); }
+.fxrisk-hero-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:7px; color:var(--fxr-muted); font-size:.7rem; font-weight:800; }
+.fxrisk-status-pill { border-radius:99px; padding:4px 8px; background:var(--fxr-panel2); color:var(--fxr-muted); font-size:.61rem; font-weight:850; }
+.fxrisk-status-pill.good { color:var(--fxr-good); background:color-mix(in srgb, var(--fxr-good) 11%, var(--fxr-panel)); }
+.fxrisk-status-pill.bad { color:var(--fxr-bad); background:color-mix(in srgb, var(--fxr-bad) 11%, var(--fxr-panel)); }
+.fxrisk-hero-value { margin:6px 0 2px; color:var(--fxr-text); font-size:clamp(1.85rem,4vw,2.35rem); letter-spacing:-.045em; line-height:1.35; font-weight:950; overflow-wrap:anywhere; }
+.fxrisk-hero-value.good { color:var(--fxr-good); }
+.fxrisk-hero-value.bad { color:var(--fxr-bad); }
+.fxrisk-hero-sub { color:var(--fxr-muted); font-size:.68rem; line-height:1.7; }
+.fxrisk-alert { display:flex; gap:8px; align-items:flex-start; margin:11px 0 15px; padding:10px 11px; border:1px solid var(--fxr-line); border-radius:11px; background:var(--fxr-panel2); color:var(--fxr-muted); font-size:.68rem; line-height:1.7; }
+.fxrisk-alert i { margin-top:3px; }
+.fxrisk-alert.good { border-color:color-mix(in srgb, var(--fxr-good) 30%, var(--fxr-line)); color:var(--fxr-good); }
+.fxrisk-alert.warning { border-color:color-mix(in srgb, #dfa53b 36%, var(--fxr-line)); color:#b17b1c; }
+.fxrisk-alert.error { border-color:color-mix(in srgb, var(--fxr-bad) 35%, var(--fxr-line)); color:var(--fxr-bad); }
+body.dark-mode .fxrisk-alert.warning { color:#e7bf73; }
+.fxrisk-alert span { min-width:0; }
+.fxrisk-results-section { margin-top:3px; }
+.fxrisk-mini-heading { margin-bottom:9px; color:var(--fxr-muted); font-size:.68rem; font-weight:900; }
+.fxrisk-stats { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.fxrisk-stat { min-width:0; padding:11px 10px; border:1px solid var(--fxr-line); border-radius:12px; background:var(--fxr-panel2); }
+.fxrisk-stat-label { display:block; color:var(--fxr-muted); font-size:.62rem; line-height:1.6; }
+.fxrisk-stat strong { display:block; margin:4px 0 2px; color:var(--fxr-text); font-size:.91rem; letter-spacing:-.02em; overflow-wrap:anywhere; }
+.fxrisk-stat small { display:block; color:var(--fxr-muted); font-size:.58rem; line-height:1.6; }
+.fxrisk-budget-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.fxrisk-budget-row > div { min-width:0; padding:11px; border:1px solid var(--fxr-line); border-radius:11px; background:var(--fxr-panel2); }
+.fxrisk-budget-row span { display:block; color:var(--fxr-muted); font-size:.63rem; line-height:1.6; }
+.fxrisk-budget-row strong { display:block; color:var(--fxr-text); font-size:1.02rem; margin-top:3px; overflow-wrap:anywhere; }
+.fxrisk-recommendation { margin-top:14px; padding:14px; border:1px solid color-mix(in srgb, var(--fxr-accent) 35%, var(--fxr-line)); border-radius:15px; background:color-mix(in srgb, var(--fxr-accent) 5%, var(--fxr-panel)); }
+.fxrisk-recommendation-head { display:flex; align-items:flex-start; gap:9px; color:var(--fxr-accent); }
+.fxrisk-recommendation-head i { margin-top:4px; font-size:.95rem; }
+.fxrisk-recommendation-head div { display:flex; flex-direction:column; gap:3px; }
+.fxrisk-recommendation-head span { color:var(--fxr-text); font-size:.75rem; font-weight:900; line-height:1.6; }
+.fxrisk-recommendation-head small { color:var(--fxr-muted); font-size:.62rem; line-height:1.6; }
+.fxrisk-suggested-row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin:11px 0 7px; }
+.fxrisk-suggested-row strong { color:var(--fxr-accent); font-size:clamp(1.6rem,3vw,2rem); letter-spacing:-.04em; }
+.fxrisk-suggested-row span { color:var(--fxr-muted); font-size:.7rem; }
+.fxrisk-suggested-foot { display:flex; justify-content:space-between; align-items:center; gap:8px; padding-top:9px; border-top:1px solid var(--fxr-line); color:var(--fxr-muted); font-size:.66rem; }
+.fxrisk-suggested-foot strong { color:var(--fxr-text); font-size:.83rem; }
+.fxrisk-recommendation p { margin:8px 0 0; color:var(--fxr-muted); font-size:.63rem; line-height:1.7; }
+.fxrisk-copy { display:flex; justify-content:center; align-items:center; gap:8px; width:100%; margin-top:13px; padding:12px; border:0; border-radius:11px; background:var(--fxr-accent); color:#07151b; font:inherit; font-size:.77rem; font-weight:950; cursor:pointer; transition:transform .15s, opacity .15s; }
+.fxrisk-copy:active { transform:scale(.985); }
+.fxrisk-copy:disabled { opacity:.5; cursor:not-allowed; }
+.fxrisk-copy-status { min-height:15px; margin:5px 0 0; color:var(--fxr-muted); font-size:.62rem; line-height:1.6; }
+.fxrisk-footer { display:flex; gap:8px; align-items:flex-start; margin-top:13px; padding:0 3px; color:var(--fxr-muted); font-size:.66rem; line-height:1.8; }
+.fxrisk-footer i { flex-shrink:0; color:#cc9635; margin-top:4px; }
+.fxrisk-hidden { display:none !important; }
+@media (max-width:800px) {
+    .fxrisk-layout { grid-template-columns:minmax(0,1fr); }
+    .fxrisk-results-panel { position:static; }
+}
+@media (max-width:520px) {
+    .fxrisk-shell { margin-inline:10px; }
+    .fxrisk-intro { align-items:flex-start; }
+    .fxrisk-reset { padding:8px; font-size:.65rem; }
+    .fxrisk-intro p { font-size:.71rem; }
+    .fxrisk-panel { padding:13px; border-radius:15px; }
+    .fxrisk-fields { gap:10px 8px; }
+    .fxrisk-field label { font-size:.64rem; }
+    .fxrisk-field input, .fxrisk-field select { padding:8px; min-height:40px; font-size:.73rem; }
+    .fxrisk-seg button { padding:7px 4px; font-size:.66rem; }
+    .fxrisk-stats { gap:7px; }
+    .fxrisk-stat { padding:9px 8px; }
+    .fxrisk-stat strong { font-size:.82rem; }
+    .fxrisk-budget-row > div { padding:9px; }
+}
+@media (max-width:365px) {
+    .fxrisk-fields { grid-template-columns:minmax(0,1fr); }
+    .fxrisk-mode-row { align-items:stretch; flex-direction:column; }
+    .fxrisk-mode-seg { width:100%; }
+    .fxrisk-intro { flex-direction:column; }
+}
+
+</style>
 </head>
 <body>
 <script>
@@ -2844,7 +2989,7 @@ if (document.documentElement.classList.contains('dark-mode')) {
             <div>
                 <div class="market-eyebrow"><i class="fas fa-satellite-dish"></i> Forex Market</div>
                 <h2>بازار فارکس</h2>
-                <p>نرخ جفت‌ارزها، تحلیل و اخبار فارکس</p>
+                <p>تحلیل بازار و محاسبه دقیق ریسک معامله</p>
             </div>
             <div class="market-pulse-orbit" aria-hidden="true">
                 <i class="fas fa-satellite-dish"></i>
@@ -2973,53 +3118,561 @@ if (document.documentElement.classList.contains('dark-mode')) {
         </div>
     </div>
 
-    <!-- ===== NEWS SECTION ===== -->
-    <div class="market-section-title">
-        <div><i class="fas fa-newspaper" style="color:var(--secondary);margin-left:6px"></i>اخبار فارکس</div>
-        <button class="market-refresh-btn" id="newsRefreshBtn" onclick="MarketModule.fetchNews()">
-            <i class="fas fa-sync-alt" id="newsRefreshIcon"></i> بروزرسانی
-        </button>
+
+    <!-- ===== ADVANCED TRADE RISK CALCULATOR ===== -->
+    <div class="market-section-title fxrisk-title-row">
+        <div><i class="fas fa-shield-halved" style="color:var(--secondary);margin-left:6px"></i>ماشین‌حساب پیشرفته مدیریت ریسک</div>
+        <span>پیش از باز کردن معامله</span>
     </div>
 
-    <!-- Filter Buttons -->
-    <div class="news-filter-row">
-        <button class="news-filter-btn active" onclick="MarketModule.filterNews('all', this)">همه</button>
-        <button class="news-filter-btn" onclick="MarketModule.filterNews('usd', this)">USD</button>
-        <button class="news-filter-btn" onclick="MarketModule.filterNews('eur', this)">EUR</button>
-        <button class="news-filter-btn" onclick="MarketModule.filterNews('gbp', this)">GBP</button>
-        <button class="news-filter-btn" onclick="MarketModule.filterNews('jpy', this)">JPY</button>
-        <button class="news-filter-btn" onclick="MarketModule.filterNews('gold', this)">Gold</button>
-        <button class="news-filter-btn" onclick="MarketModule.filterNews('central', this)">Central Banks</button>
-    </div>
+    <section class="fxrisk-shell" id="fxRiskCalculator" aria-labelledby="fxr-heading">
+        <div class="fxrisk-intro">
+            <div class="fxrisk-intro-copy">
+                <div class="fxrisk-eyebrow"><i class="fas fa-crosshairs"></i> TRADE PLANNER · FX + GOLD</div>
+                <h2 id="fxr-heading">پیش از ورود، ریسک معامله را محاسبه کن</h2>
+                <p>حجم لات، زیان احتمالی تا استاپ، هزینه اسپرد، کمیسیون و نسبت سود به زیان را پیش از ورود بررسی کن.</p>
+            </div>
+            <button class="fxrisk-reset" id="fxr-reset" type="button"><i class="fas fa-rotate-left"></i> بازنشانی</button>
+        </div>
 
-    <!-- News List -->
-    <div class="news-list" id="newsList">
-        <!-- Skeleton -->
-        <div class="news-skeleton" id="newsSkeleton">
-            <div class="skeleton" style="width:80px;height:70px;border-radius:10px;flex-shrink:0"></div>
-            <div style="flex:1">
-                <div class="skeleton" style="width:60px;height:8px;margin-bottom:6px;border-radius:4px"></div>
-                <div class="skeleton" style="width:100%;height:10px;margin-bottom:4px;border-radius:4px"></div>
-                <div class="skeleton" style="width:80%;height:10px;border-radius:4px"></div>
-            </div>
+        <div class="fxrisk-disclaimer">
+            <i class="fas fa-circle-info"></i>
+            <div><strong>قیمت زنده نیست.</strong> مقدارهای Bid و Ask را از پلتفرم بروکر وارد کن. ماشین‌حساب به قیمت حساب معاملاتی تو متصل نیست و برای حساب دلاری (USD) محاسبه می‌کند.</div>
         </div>
-        <div class="news-skeleton">
-            <div class="skeleton" style="width:80px;height:70px;border-radius:10px;flex-shrink:0"></div>
-            <div style="flex:1">
-                <div class="skeleton" style="width:50px;height:8px;margin-bottom:6px;border-radius:4px"></div>
-                <div class="skeleton" style="width:100%;height:10px;margin-bottom:4px;border-radius:4px"></div>
-                <div class="skeleton" style="width:70%;height:10px;border-radius:4px"></div>
+
+        <div class="fxrisk-layout">
+            <div class="fxrisk-panel fxrisk-input-panel">
+                <div class="fxrisk-panel-heading">
+                    <span class="fxrisk-step">01</span>
+                    <div><h3>مشخصات معامله</h3><p>نماد، جهت، قیمت و بودجه ریسک</p></div>
+                </div>
+
+                <div class="fxrisk-fields">
+                    <div class="fxrisk-field">
+                        <label for="fxr-symbol">نماد معاملاتی</label>
+                        <select id="fxr-symbol">
+                            <optgroup label="جفت‌ارزهای اصلی">
+                                <option value="EURUSD">EUR/USD</option>
+                                <option value="GBPUSD">GBP/USD</option>
+                                <option value="AUDUSD">AUD/USD</option>
+                                <option value="NZDUSD">NZD/USD</option>
+                                <option value="USDJPY">USD/JPY</option>
+                                <option value="USDCHF">USD/CHF</option>
+                                <option value="USDCAD">USD/CAD</option>
+                            </optgroup>
+                            <optgroup label="فلزات">
+                                <option value="XAUUSD">طلا (XAU/USD)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="fxrisk-field">
+                        <label>جهت معامله</label>
+                        <div class="fxrisk-seg" role="group" aria-label="جهت معامله">
+                            <button type="button" id="fxr-buy" class="active" data-fxr-side="buy"><i class="fas fa-arrow-trend-up"></i> خرید (Buy)</button>
+                            <button type="button" id="fxr-sell" data-fxr-side="sell"><i class="fas fa-arrow-trend-down"></i> فروش (Sell)</button>
+                        </div>
+                    </div>
+
+                    <div class="fxrisk-field">
+                        <label for="fxr-bid">قیمت Bid (فروش)</label>
+                        <input id="fxr-bid" type="number" inputmode="decimal" min="0" step="any" placeholder="قیمت Bid بروکر">
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-ask">قیمت Ask (خرید)</label>
+                        <input id="fxr-ask" type="number" inputmode="decimal" min="0" step="any" placeholder="قیمت Ask بروکر">
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-lot">لات انتخابی فعلی</label>
+                        <input id="fxr-lot" type="number" inputmode="decimal" min="0.001" step="any" value="0.10">
+                        <span class="fxrisk-hint">ریسک لات واردشده با لات پیشنهادی مقایسه می‌شود.</span>
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-balance">موجودی حساب (USD)</label>
+                        <input id="fxr-balance" type="number" inputmode="decimal" min="0.01" step="any" value="1000">
+                    </div>
+
+                    <div class="fxrisk-field">
+                        <label for="fxr-risk-mode">روش تعیین ریسک</label>
+                        <select id="fxr-risk-mode">
+                            <option value="percent">درصدی از موجودی حساب</option>
+                            <option value="cash">مبلغ ثابت (USD)</option>
+                        </select>
+                    </div>
+                    <div class="fxrisk-field" id="fxr-risk-percent-wrap">
+                        <label for="fxr-risk-percent">ریسک مجاز (%)</label>
+                        <input id="fxr-risk-percent" type="number" inputmode="decimal" min="0.01" max="100" step="any" value="1">
+                        <span class="fxrisk-hint">مثلاً ۱٪ از موجودی حساب</span>
+                    </div>
+                    <div class="fxrisk-field fxrisk-hidden" id="fxr-risk-cash-wrap">
+                        <label for="fxr-risk-cash">بودجه ریسک ثابت (USD)</label>
+                        <input id="fxr-risk-cash" type="number" inputmode="decimal" min="0.01" step="any" value="10">
+                    </div>
+                </div>
+
+                <div class="fxrisk-divider"></div>
+                <div class="fxrisk-panel-heading">
+                    <span class="fxrisk-step">02</span>
+                    <div><h3>استاپ‌لاس و تارگت</h3><p>فاصله را وارد کن یا قیمت دقیق را تعیین کن</p></div>
+                </div>
+
+                <div class="fxrisk-mode-row">
+                    <span>روش تعیین سطوح</span>
+                    <div class="fxrisk-seg fxrisk-mode-seg" role="group" aria-label="روش تعیین استاپ و تارگت">
+                        <button type="button" id="fxr-mode-distance" class="active" data-fxr-mode="distance">فاصله (پیپ)</button>
+                        <button type="button" id="fxr-mode-price" data-fxr-mode="price">قیمت دقیق</button>
+                    </div>
+                </div>
+
+                <div class="fxrisk-fields" id="fxr-distance-fields">
+                    <div class="fxrisk-field">
+                        <label for="fxr-stop-distance">فاصله استاپ‌لاس</label>
+                        <div class="fxrisk-input-suffix"><input id="fxr-stop-distance" type="number" inputmode="decimal" min="0.1" step="any" value="20"><span id="fxr-distance-unit">pip</span></div>
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-target-distance">فاصله تارگت (اختیاری)</label>
+                        <div class="fxrisk-input-suffix"><input id="fxr-target-distance" type="number" inputmode="decimal" min="0" step="any" value="40"><span id="fxr-target-unit">pip</span></div>
+                    </div>
+                </div>
+
+                <div class="fxrisk-fields fxrisk-hidden" id="fxr-price-fields">
+                    <div class="fxrisk-field">
+                        <label for="fxr-stop-price">قیمت استاپ‌لاس</label>
+                        <input id="fxr-stop-price" type="number" inputmode="decimal" min="0" step="any" placeholder="قیمت استاپ">
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-target-price">قیمت تارگت (اختیاری)</label>
+                        <input id="fxr-target-price" type="number" inputmode="decimal" min="0" step="any" placeholder="قیمت تارگت">
+                    </div>
+                </div>
+
+                <div class="fxrisk-divider"></div>
+                <div class="fxrisk-panel-heading">
+                    <span class="fxrisk-step">03</span>
+                    <div><h3>هزینه‌ها و مشخصات بروکر</h3><p>برای نزدیک‌تر شدن برآورد به شرایط حساب تو</p></div>
+                </div>
+
+                <div class="fxrisk-fields">
+                    <div class="fxrisk-field">
+                        <label for="fxr-commission">کمیسیون رفت‌وبرگشت (USD / هر لات)</label>
+                        <input id="fxr-commission" type="number" inputmode="decimal" min="0" step="any" value="0">
+                        <span class="fxrisk-hint">مجموع کمیسیون بازکردن و بستن یک لات</span>
+                    </div>
+                    <div class="fxrisk-field fxrisk-hidden" id="fxr-gold-contract-wrap">
+                        <label for="fxr-gold-contract">اندازه قرارداد طلا (اونس/لات)</label>
+                        <input id="fxr-gold-contract" type="number" inputmode="decimal" min="0.01" step="any" value="100">
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-min-lot">حداقل لات بروکر</label>
+                        <input id="fxr-min-lot" type="number" inputmode="decimal" min="0.001" step="any" value="0.01">
+                    </div>
+                    <div class="fxrisk-field">
+                        <label for="fxr-lot-step">گام افزایش لات</label>
+                        <input id="fxr-lot-step" type="number" inputmode="decimal" min="0.001" step="any" value="0.01">
+                        <span class="fxrisk-hint">معمولاً 0.01؛ با مشخصات بروکر تطبیق بده.</span>
+                    </div>
+                </div>
+
+                <div class="fxrisk-note">
+                    <i class="fas fa-calculator"></i>
+                    <span>ارزش پیپ برای جفت‌ارزها بر مبنای لات استاندارد ۱۰۰٬۰۰۰ واحدی محاسبه می‌شود. در طلا، حرکت ۰٫۰۱ دلار یک واحد محاسباتی است و اندازه قرارداد باید با بروکر تطبیق داده شود.</span>
+                </div>
             </div>
+
+            <aside class="fxrisk-panel fxrisk-results-panel" aria-live="polite">
+                <div class="fxrisk-panel-heading">
+                    <span class="fxrisk-step fxrisk-step-result"><i class="fas fa-chart-pie"></i></span>
+                    <div><h3>نتیجه محاسبه</h3><p>برآورد بر اساس اطلاعات واردشده</p></div>
+                </div>
+
+                <div class="fxrisk-hero">
+                    <div class="fxrisk-hero-top"><span>زیان تخمینی تا استاپ با کمیسیون</span><span class="fxrisk-status-pill" id="fxr-risk-pill">منتظر قیمت</span></div>
+                    <div class="fxrisk-hero-value" id="fxr-total-loss">—</div>
+                    <div class="fxrisk-hero-sub" id="fxr-total-loss-note">قیمت Bid و Ask بروکر را وارد کن تا محاسبه آغاز شود.</div>
+                </div>
+
+                <div class="fxrisk-alert" id="fxr-status" role="status" aria-live="polite"><i class="fas fa-circle-info"></i><span>قیمت‌ها زنده نیستند؛ Bid و Ask را از بروکر وارد کن.</span></div>
+
+                <div class="fxrisk-results-section">
+                    <div class="fxrisk-mini-heading">هزینه و فاصله معامله</div>
+                    <div class="fxrisk-stats">
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">اسپرد فعلی</span><strong id="fxr-spread">—</strong><small id="fxr-spread-price">اختلاف Bid و Ask</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">هزینه اسپرد برای لات فعلی</span><strong id="fxr-spread-cost">—</strong><small>نمایش جداگانه، بدون دوباره‌شماری</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">ارزش هر پیپ برای لات فعلی</span><strong id="fxr-pip-value">—</strong><small id="fxr-pip-unit">وابسته به نماد و قیمت</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">کمیسیون رفت‌وبرگشت</span><strong id="fxr-commission-cost">—</strong><small>برای حجم انتخابی</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">قیمت استاپ‌لاس</span><strong id="fxr-stop-price-out">—</strong><small id="fxr-stop-distance-out">فاصله تا استاپ</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">قیمت تارگت</span><strong id="fxr-target-price-out">—</strong><small>در صورت تعیین تارگت</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">سود خالص تخمینی تا تارگت</span><strong id="fxr-reward">—</strong><small>پس از کسر کمیسیون</small></div>
+                        <div class="fxrisk-stat"><span class="fxrisk-stat-label">نسبت سود به زیان</span><strong id="fxr-rr">—</strong><small>بر اساس سود و زیان تخمینی</small></div>
+                    </div>
+                </div>
+
+                <div class="fxrisk-divider"></div>
+                <div class="fxrisk-budget-row">
+                    <div><span>بودجه ریسک انتخاب‌شده</span><strong id="fxr-risk-budget">—</strong></div>
+                    <div><span>ریسک لات فعلی از موجودی</span><strong id="fxr-actual-risk-percent">—</strong></div>
+                </div>
+
+                <div class="fxrisk-recommendation">
+                    <div class="fxrisk-recommendation-head"><i class="fas fa-bullseye"></i><div><span>حجم پیشنهادی بر اساس بودجه ریسک</span><small>لات به پایین و بر اساس گام لات بروکر گرد می‌شود.</small></div></div>
+                    <div class="fxrisk-suggested-row"><strong id="fxr-suggested-lot">—</strong><span>لات پیشنهادی</span></div>
+                    <div class="fxrisk-suggested-foot"><span>زیان تخمینی با حجم پیشنهادی</span><strong id="fxr-suggested-loss">—</strong></div>
+                    <p id="fxr-suggested-note">پس از وارد کردن قیمت‌ها، حجم متناسب با ریسک محاسبه می‌شود.</p>
+                </div>
+
+                <button class="fxrisk-copy" id="fxr-copy" type="button"><i class="fas fa-copy"></i> کپی خلاصه معامله</button>
+                <p class="fxrisk-copy-status" id="fxr-copy-status" aria-live="polite"></p>
+            </aside>
         </div>
-        <div class="news-skeleton">
-            <div class="skeleton" style="width:80px;height:70px;border-radius:10px;flex-shrink:0"></div>
-            <div style="flex:1">
-                <div class="skeleton" style="width:70px;height:8px;margin-bottom:6px;border-radius:4px"></div>
-                <div class="skeleton" style="width:100%;height:10px;margin-bottom:4px;border-radius:4px"></div>
-                <div class="skeleton" style="width:60%;height:10px;border-radius:4px"></div>
-            </div>
-        </div>
-    </div>
+
+        <div class="fxrisk-footer"><i class="fas fa-triangle-exclamation"></i> این برآورد تضمین‌کننده زیان نهایی نیست. لغزش قیمت، گپ بازار، تغییر اسپرد، سواپ و هزینه‌های واردنشده می‌توانند نتیجه واقعی را تغییر دهند. قیمت‌ها باید پیش از هر معامله دوباره بررسی شوند.</div>
+    </section>
+
+<script>
+
+(() => {
+    const root = document.getElementById('fxRiskCalculator');
+    if (!root || root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    const $ = id => document.getElementById(id);
+    let side = 'buy';
+    let mode = 'distance';
+    let lastCalculation = null;
+
+    const num = id => {
+        const raw = $(id).value.trim();
+        return raw === '' ? NaN : Number(raw);
+    };
+    const fmt = (value, digits = 2) => Number.isFinite(value)
+        ? value.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })
+        : '—';
+    const usd = value => Number.isFinite(value)
+        ? (value < 0 ? '−$' : '$') + fmt(Math.abs(value), 2)
+        : '—';
+    const clean = value => Number.isFinite(value) ? value : NaN;
+
+    function config() {
+        const symbol = $('fxr-symbol').value;
+        const gold = symbol === 'XAUUSD';
+        const jpy = symbol === 'USDJPY';
+        return {
+            symbol,
+            gold,
+            jpy,
+            pip: (gold || jpy) ? 0.01 : 0.0001,
+            priceDigits: gold ? 2 : (jpy ? 3 : 5),
+            pipLabel: gold ? 'unit' : 'pip',
+            contract: gold ? num('fxr-gold-contract') : 100000
+        };
+    }
+
+    function pipValuePerLot(c, price) {
+        if (c.gold) return c.contract * c.pip;
+        if (c.symbol === 'EURUSD' || c.symbol === 'GBPUSD' || c.symbol === 'AUDUSD' || c.symbol === 'NZDUSD') return 10;
+        const p = Math.max(price, Number.EPSILON);
+        if (c.symbol === 'USDJPY' || c.symbol === 'USDCHF' || c.symbol === 'USDCAD') return 10 / p * (c.symbol === 'USDJPY' ? 100 : 1);
+        return NaN;
+    }
+
+    function setText(id, value) {
+        const el = $(id);
+        if (el) el.textContent = value;
+    }
+
+    function setEmpty(message) {
+        [
+            'fxr-total-loss','fxr-spread','fxr-spread-price','fxr-spread-cost','fxr-pip-value',
+            'fxr-pip-unit','fxr-commission-cost','fxr-stop-price-out','fxr-stop-distance-out',
+            'fxr-target-price-out','fxr-reward','fxr-rr','fxr-risk-budget','fxr-actual-risk-percent',
+            'fxr-suggested-lot','fxr-suggested-loss'
+        ].forEach(id => setText(id, '—'));
+        setText('fxr-total-loss-note', 'برای محاسبه، ورودی‌ها را بررسی کن.');
+        setText('fxr-suggested-note', 'پس از معتبر شدن ورودی‌ها، حجم متناسب با ریسک نمایش داده می‌شود.');
+        setText('fxr-risk-pill', 'نیاز به ورودی');
+        $('fxr-risk-pill').className = 'fxrisk-status-pill';
+        $('fxr-total-loss').className = 'fxrisk-hero-value';
+        $('fxr-status').className = 'fxrisk-alert error';
+        $('fxr-status').innerHTML = '<i class="fas fa-circle-exclamation"></i><span></span>';
+        $('fxr-status').querySelector('span').textContent = message;
+        lastCalculation = null;
+    }
+
+    function setSide(value) {
+        side = value;
+        $('fxr-buy').classList.toggle('active', side === 'buy');
+        $('fxr-sell').classList.toggle('active', side === 'sell');
+        calc();
+    }
+
+    function setMode(value) {
+        mode = value;
+        $('fxr-mode-distance').classList.toggle('active', mode === 'distance');
+        $('fxr-mode-price').classList.toggle('active', mode === 'price');
+        $('fxr-distance-fields').classList.toggle('fxrisk-hidden', mode !== 'distance');
+        $('fxr-price-fields').classList.toggle('fxrisk-hidden', mode !== 'price');
+        calc();
+    }
+
+    function calc() {
+        const c = config();
+        const bid = num('fxr-bid');
+        const ask = num('fxr-ask');
+        const lot = num('fxr-lot');
+        const balance = num('fxr-balance');
+        const commissionPerLot = num('fxr-commission');
+        const minLot = num('fxr-min-lot');
+        const lotStep = num('fxr-lot-step');
+        const riskMode = $('fxr-risk-mode').value;
+
+        if (!(Number.isFinite(bid) && Number.isFinite(ask) && bid > 0 && ask > 0 && ask >= bid)) {
+            setEmpty('قیمت Bid و Ask معتبر بروکر را وارد کن؛ این ابزار نرخ زنده دریافت نمی‌کند.');
+            return;
+        }
+        if (!(lot > 0) || !(balance > 0) || !(Number.isFinite(commissionPerLot) && commissionPerLot >= 0) ||
+            !(Number.isFinite(minLot) && minLot > 0) || !(Number.isFinite(lotStep) && lotStep > 0)) {
+            setEmpty('لات فعلی، موجودی، کمیسیون، حداقل لات و گام لات را بررسی کن.');
+            return;
+        }
+        if (c.gold && !(Number.isFinite(c.contract) && c.contract > 0)) {
+            setEmpty('اندازه قرارداد طلا باید عددی بزرگ‌تر از صفر باشد.');
+            return;
+        }
+
+        let riskBudget;
+        if (riskMode === 'percent') {
+            const pct = num('fxr-risk-percent');
+            if (!(Number.isFinite(pct) && pct > 0 && pct <= 100)) {
+                setEmpty('درصد ریسک باید بیشتر از صفر و حداکثر ۱۰۰ باشد.');
+                return;
+            }
+            riskBudget = balance * pct / 100;
+        } else {
+            riskBudget = num('fxr-risk-cash');
+            if (!(Number.isFinite(riskBudget) && riskBudget > 0)) {
+                setEmpty('بودجه ریسک ثابت باید بزرگ‌تر از صفر باشد.');
+                return;
+            }
+        }
+
+        const entry = side === 'buy' ? ask : bid;
+        const mid = (bid + ask) / 2;
+        const pipValue = pipValuePerLot(c, mid);
+        if (!(Number.isFinite(pipValue) && pipValue > 0)) {
+            setEmpty('ارزش پیپ برای این نماد محاسبه نشد؛ نماد و قیمت‌ها را بررسی کن.');
+            return;
+        }
+
+        let stopPips;
+        let stopPrice;
+        let targetPips = 0;
+        let targetPrice = null;
+
+        if (mode === 'distance') {
+            stopPips = num('fxr-stop-distance');
+            const targetDistance = num('fxr-target-distance');
+            if (!(Number.isFinite(stopPips) && stopPips > 0)) {
+                setEmpty('فاصله استاپ‌لاس باید بزرگ‌تر از صفر باشد.');
+                return;
+            }
+            if (!(Number.isFinite(targetDistance) && targetDistance >= 0)) {
+                setEmpty('فاصله تارگت باید صفر یا بزرگ‌تر از صفر باشد.');
+                return;
+            }
+            stopPrice = side === 'buy' ? entry - stopPips * c.pip : entry + stopPips * c.pip;
+            if (targetDistance > 0) {
+                targetPips = targetDistance;
+                targetPrice = side === 'buy' ? entry + targetPips * c.pip : entry - targetPips * c.pip;
+            }
+        } else {
+            const enteredStop = num('fxr-stop-price');
+            if (!(Number.isFinite(enteredStop) && enteredStop > 0)) {
+                setEmpty('قیمت استاپ‌لاس را وارد کن.');
+                return;
+            }
+            const stopDistance = side === 'buy' ? entry - enteredStop : enteredStop - entry;
+            if (!(stopDistance > 0)) {
+                setEmpty('قیمت استاپ باید در سمت زیان معامله باشد؛ جهت معامله و قیمت استاپ را بررسی کن.');
+                return;
+            }
+            stopPrice = enteredStop;
+            stopPips = stopDistance / c.pip;
+
+            const rawTarget = $('fxr-target-price').value.trim() === '' ? NaN : num('fxr-target-price');
+            if (Number.isFinite(rawTarget)) {
+                const targetDistance = side === 'buy' ? rawTarget - entry : entry - rawTarget;
+                if (!(targetDistance > 0)) {
+                    setEmpty('قیمت تارگت باید در سمت سود معامله باشد یا خالی بماند.');
+                    return;
+                }
+                targetPrice = rawTarget;
+                targetPips = targetDistance / c.pip;
+            }
+        }
+
+        const spreadPrice = ask - bid;
+        const spreadPips = spreadPrice / c.pip;
+        const spreadCost = spreadPips * pipValue * lot;
+        const commissionCost = commissionPerLot * lot;
+        const movementLoss = stopPips * pipValue * lot;
+        const totalLoss = movementLoss + commissionCost;
+        const perLotRisk = stopPips * pipValue + commissionPerLot;
+        if (!(Number.isFinite(perLotRisk) && perLotRisk > 0)) {
+            setEmpty('بر اساس این ورودی‌ها، ریسک هر لات محاسبه نمی‌شود.');
+            return;
+        }
+
+        const rawSuggested = riskBudget / perLotRisk;
+        const lotDecimals = Math.min(4, ((String(lotStep).split('.')[1] || '').length));
+        let suggestedLot = Math.floor((rawSuggested + 1e-10) / lotStep) * lotStep;
+        suggestedLot = Number(suggestedLot.toFixed(lotDecimals));
+        if (suggestedLot + 1e-10 < minLot) suggestedLot = 0;
+        const suggestedLoss = suggestedLot * perLotRisk;
+        const actualRiskPct = totalLoss / balance * 100;
+        const netReward = targetPips > 0 ? (targetPips * pipValue - commissionPerLot) * lot : NaN;
+        const rr = targetPips > 0 && totalLoss > 0 ? netReward / totalLoss : NaN;
+        const riskExceeded = totalLoss > riskBudget + 0.005;
+        const priceFormat = value => Number.isFinite(value) ? fmt(value, c.priceDigits) : '—';
+
+        setText('fxr-total-loss', usd(totalLoss));
+        $('fxr-total-loss').className = 'fxrisk-hero-value ' + (riskExceeded ? 'bad' : 'good');
+        setText('fxr-total-loss-note', 'لات فعلی: ' + fmt(lot, Math.min(4, ((String(lot).split('.')[1] || '').length))) + ' · فاصله استاپ: ' + fmt(stopPips, 2) + ' ' + c.pipLabel);
+        setText('fxr-risk-pill', riskExceeded ? 'بیشتر از بودجه' : 'در محدوده بودجه');
+        $('fxr-risk-pill').className = 'fxrisk-status-pill ' + (riskExceeded ? 'bad' : 'good');
+
+        setText('fxr-spread', fmt(spreadPips, c.gold ? 2 : 1) + ' ' + c.pipLabel);
+        setText('fxr-spread-price', fmt(spreadPrice, c.priceDigits) + ' اختلاف قیمت');
+        setText('fxr-spread-cost', usd(spreadCost));
+        setText('fxr-pip-value', usd(pipValue * lot));
+        setText('fxr-pip-unit', c.gold ? 'برای حرکت 0.01 دلار طلا' : 'برای هر پیپ در لات فعلی');
+        setText('fxr-commission-cost', usd(commissionCost));
+        setText('fxr-stop-price-out', priceFormat(stopPrice));
+        setText('fxr-stop-distance-out', fmt(stopPips, 2) + ' ' + c.pipLabel);
+        setText('fxr-target-price-out', targetPrice === null ? 'تعیین نشده' : priceFormat(targetPrice));
+        setText('fxr-reward', Number.isFinite(netReward) ? usd(netReward) : '—');
+        setText('fxr-rr', Number.isFinite(rr) ? fmt(rr, 2) + 'R' : '—');
+        setText('fxr-risk-budget', usd(riskBudget));
+        setText('fxr-actual-risk-percent', fmt(actualRiskPct, 2) + '%');
+
+        setText('fxr-suggested-lot', suggestedLot > 0 ? fmt(suggestedLot, lotDecimals) + ' lot' : '۰٫۰۰ lot');
+        setText('fxr-suggested-loss', usd(suggestedLoss));
+        let suggestionNote = 'حجم پیشنهادی بر مبنای زیان تا استاپ و کمیسیون محاسبه شده و رو به پایین گرد شده است.';
+        if (suggestedLot === 0) suggestionNote = 'بودجه ریسک برای حداقل لات انتخاب‌شده کافی نیست. حداقل لات یا فاصله استاپ را فقط مطابق مشخصات بروکر و برنامه ریسک بررسی کن.';
+        else if (riskBudget > balance) suggestionNote = 'هشدار: بودجه ریسک از کل موجودی حساب بیشتر است؛ تنظیمات ریسک را دوباره بررسی کن.';
+        else if (riskExceeded) suggestionNote = 'لات فعلی از بودجه ریسک عبور می‌کند. برای مقایسه، حجم پیشنهادی سمت راست را بررسی کن.';
+        setText('fxr-suggested-note', suggestionNote);
+
+        const status = $('fxr-status');
+        status.className = 'fxrisk-alert ' + (riskExceeded || suggestedLot === 0 || riskBudget > balance ? 'warning' : 'good');
+        status.innerHTML = '<i class="fas fa-circle-info"></i><span></span>';
+        let message = riskExceeded
+            ? 'لات فعلی از بودجه ریسک انتخاب‌شده بیشتر است؛ پیش از ورود، حجم را بازبینی کن.'
+            : 'لات فعلی در محدوده بودجه ریسک انتخاب‌شده قرار دارد.';
+        if (suggestedLot === 0) message += ' بودجه فعلی برای حداقل لات تعیین‌شده کافی نیست.';
+        if (riskBudget > balance) message += ' بودجه ریسک از موجودی حساب بیشتر است.';
+        status.querySelector('span').textContent = message;
+
+        lastCalculation = {
+            symbol: c.symbol, side, entry, stopPrice, targetPrice, lot,
+            stopPips, targetPips, spreadPips, spreadCost, commissionCost,
+            totalLoss, riskBudget, actualRiskPct, suggestedLot, suggestedLoss,
+            netReward, rr
+        };
+    }
+
+    function reset() {
+        $('fxr-symbol').value = 'EURUSD';
+        ['fxr-bid','fxr-ask','fxr-stop-price','fxr-target-price'].forEach(id => { $(id).value = ''; });
+        $('fxr-lot').value = '0.10';
+        $('fxr-balance').value = '1000';
+        $('fxr-risk-mode').value = 'percent';
+        $('fxr-risk-percent').value = '1';
+        $('fxr-risk-cash').value = '10';
+        $('fxr-stop-distance').value = '20';
+        $('fxr-target-distance').value = '40';
+        $('fxr-commission').value = '0';
+        $('fxr-gold-contract').value = '100';
+        $('fxr-min-lot').value = '0.01';
+        $('fxr-lot-step').value = '0.01';
+        $('fxr-risk-percent-wrap').classList.remove('fxrisk-hidden');
+        $('fxr-risk-cash-wrap').classList.add('fxrisk-hidden');
+        $('fxr-gold-contract-wrap').classList.add('fxrisk-hidden');
+        setSide('buy');
+        setMode('distance');
+        setText('fxr-copy-status', '');
+        calc();
+    }
+
+    async function copySummary() {
+        calc();
+        if (!lastCalculation) {
+            setText('fxr-copy-status', 'ابتدا ورودی‌های معتبر را تکمیل کن.');
+            return;
+        }
+        const d = lastCalculation;
+        const lines = [
+            'FX Risk Calculator',
+            'Symbol: ' + d.symbol,
+            'Side: ' + d.side.toUpperCase(),
+            'Entry: ' + d.entry,
+            'Stop loss: ' + d.stopPrice,
+            'Take profit: ' + (d.targetPrice === null ? 'Not set' : d.targetPrice),
+            'Current lot: ' + d.lot,
+            'Stop distance: ' + fmt(d.stopPips, 2),
+            'Spread: ' + fmt(d.spreadPips, 2),
+            'Spread cost (shown separately): ' + usd(d.spreadCost),
+            'Commission: ' + usd(d.commissionCost),
+            'Estimated loss at stop: ' + usd(d.totalLoss),
+            'Risk budget: ' + usd(d.riskBudget),
+            'Current risk / balance: ' + fmt(d.actualRiskPct, 2) + '%',
+            'Estimated net reward: ' + (Number.isFinite(d.netReward) ? usd(d.netReward) : 'Not set'),
+            'Reward / risk: ' + (Number.isFinite(d.rr) ? fmt(d.rr, 2) + 'R' : 'Not set'),
+            'Suggested lot: ' + fmt(d.suggestedLot, 3),
+            'Suggested loss: ' + usd(d.suggestedLoss)
+        ];
+        const output = lines.join('\n');
+        try {
+            await navigator.clipboard.writeText(output);
+            setText('fxr-copy-status', 'خلاصه معامله کپی شد.');
+        } catch (error) {
+            const area = document.createElement('textarea');
+            area.value = output;
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            document.body.appendChild(area);
+            area.select();
+            let copied = false;
+            try { copied = document.execCommand('copy'); } catch (_) {}
+            area.remove();
+            setText('fxr-copy-status', copied ? 'خلاصه معامله کپی شد.' : output);
+        }
+    }
+
+    $('fxr-buy').addEventListener('click', () => setSide('buy'));
+    $('fxr-sell').addEventListener('click', () => setSide('sell'));
+    $('fxr-mode-distance').addEventListener('click', () => setMode('distance'));
+    $('fxr-mode-price').addEventListener('click', () => setMode('price'));
+    $('fxr-risk-mode').addEventListener('change', () => {
+        const fixed = $('fxr-risk-mode').value === 'cash';
+        $('fxr-risk-percent-wrap').classList.toggle('fxrisk-hidden', fixed);
+        $('fxr-risk-cash-wrap').classList.toggle('fxrisk-hidden', !fixed);
+        calc();
+    });
+    $('fxr-symbol').addEventListener('change', () => {
+        ['fxr-bid','fxr-ask','fxr-stop-price','fxr-target-price'].forEach(id => { $(id).value = ''; });
+        const gold = $('fxr-symbol').value === 'XAUUSD';
+        $('fxr-gold-contract-wrap').classList.toggle('fxrisk-hidden', !gold);
+        $('fxr-distance-unit').textContent = gold ? 'unit' : 'pip';
+        $('fxr-target-unit').textContent = gold ? 'unit' : 'pip';
+        calc();
+    });
+    root.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+    $('fxr-reset').addEventListener('click', reset);
+    $('fxr-copy').addEventListener('click', copySummary);
+
+    calc();
+})();
+
+</script>
 
 </div>
 <!-- ========== END MARKET VIEW ========== -->
@@ -7780,15 +8433,8 @@ window.submitJournal = submitJournal;
 // CONFIG — تنظیمات مرکزی (فارکس)
 // ============================================================
 const MARKET_CONFIG = {
-    RSS2JSON_KEY: 'v9rma2lsqojnovfxrasuu9useud5xc7qsplauiv3',
     MARKET_REFRESH_INTERVAL: 60,
     CACHE_TTL: 55000,
-    // اخبار فارکس
-    RSS_FEEDS: [
-        'https://www.fxstreet.com/rss/news',
-        'https://www.investing.com/rss/news_1.rss',
-        'https://www.forexlive.com/feed/news'
-    ],
     // نرخ‌های مرجع بانک مرکزی اروپا (روزانه، بدون نیاز به کلید API)
     // برای قیمت لحظه‌ای واقعی، این بخش را با API بروکر/سرویس داده (Twelve Data، Finnhub، OANDA ...) جایگزین کنید.
     FX_API_BASES: [
@@ -7978,8 +8624,6 @@ const Indicators = {
 // موتور اصلی MarketModule
 // ============================================================
 const MarketModule = {
-    newsData: [],
-    filteredNews: [],
     refreshTimer: null,
     isInitialized: false,
 
@@ -7994,7 +8638,7 @@ const MarketModule = {
             await LiveJournal.init();
         }
         if (this.isInitialized) {
-            if (!this.newsData?.length) this.fetchNews();
+            this.fetchMarketAnalysis();
             return;
         }
         this.isInitialized = true;
@@ -8003,10 +8647,7 @@ const MarketModule = {
     },
 
     async fetchAll() {
-        await Promise.allSettled([
-            this.fetchMarketAnalysis(),
-            this.fetchNews()
-        ]);
+        await this.fetchMarketAnalysis();
     },
 
     // ─── سشن‌های بازار فارکس (ساعت UTC، تقریبی) ─────────────
@@ -8102,149 +8743,12 @@ const MarketModule = {
         }
     },
 
-    async fetchNews() {
-        const btn  = document.getElementById('newsRefreshBtn');
-        const icon = document.getElementById('newsRefreshIcon');
-        if (btn)  btn.disabled = true;
-        if (icon) icon.classList.add('spin');
-
-        try {
-            const allItems = [];
-            for (const feed of MARKET_CONFIG.RSS_FEEDS) {
-                try {
-                    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}&api_key=${MARKET_CONFIG.RSS2JSON_KEY}&count=8`;
-                    const res  = await fetch(url);
-                    const data = await res.json();
-                    if (data.status === 'ok' && Array.isArray(data.items)) {
-                        const source = new URL(feed).hostname
-                            .replace('www.','')
-                            .replace('fxstreet.com','FXStreet')
-                            .replace('investing.com','Investing.com')
-                            .replace('forexlive.com','ForexLive');
-                        data.items.forEach(item => {
-                            allItems.push({
-                                title:       item.title,
-                                link:        item.link,
-                                pubDate:     item.pubDate,
-                                thumbnail:   item.thumbnail || item.enclosure?.link || '',
-                                description: item.description?.replace(/<[^>]+>/g,'').substring(0,120) || '',
-                                source,
-                                categories:  (item.categories||[]).join(' ').toLowerCase()+' '+item.title.toLowerCase()
-                            });
-                        });
-                    }
-                } catch(_) {}
-            }
-
-            allItems.sort((a,b) => new Date(b.pubDate) - new Date(a.pubDate));
-            const newsItems = allItems.length ? allItems : this._fallbackNews();
-            this.newsData = newsItems;
-            this.filteredNews = newsItems;
-            this.renderNews(newsItems);
-
-        } catch(e) {
-            console.warn('News fetch failed:', e);
-            const fallback = this._fallbackNews();
-            this.newsData = fallback;
-            this.filteredNews = fallback;
-            this.renderNews(fallback);
-        } finally {
-            if (btn)  btn.disabled = false;
-            if (icon) icon.classList.remove('spin');
-        }
-    },
-
-    filterNews(category, btnEl) {
-        document.querySelectorAll('.news-filter-btn').forEach(b => b.classList.remove('active'));
-        if (btnEl) btnEl.classList.add('active');
-        if (category === 'all') { this.renderNews(this.newsData); return; }
-        const keywords = {
-            usd:     ['usd','dollar','fed','fomc','powell','nfp','payroll','دلار','فدرال'],
-            eur:     ['eur','euro','ecb','lagarde','eurozone','یورو'],
-            gbp:     ['gbp','pound','sterling','boe','bank of england','پوند'],
-            jpy:     ['jpy','yen','boj','japan','ین'],
-            gold:    ['gold','xau','bullion','silver','طلا'],
-            central: ['central bank','rate decision','interest rate','rate cut','rate hike','fed','ecb','boe','boj','snb','rba','بانک مرکزی','نرخ بهره']
-        };
-        const words    = keywords[category] || [category];
-        const filtered = this.newsData.filter(item =>
-            words.some(w => item.categories?.includes(w) || item.title?.toLowerCase().includes(w))
-        );
-        this.renderNews(filtered.length > 0 ? filtered : this.newsData);
-    },
-
-    renderNews(items) {
-        const list = document.getElementById('newsList');
-        if (!list) return;
-        if (!items || items.length === 0) {
-            list.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-secondary)"><i class="fas fa-newspaper" style="font-size:2rem;display:block;margin-bottom:10px"></i>خبری یافت نشد</div>`;
-            return;
-        }
-        const safeLink = (u) => /^https?:\/\//i.test(u || '') ? escapeHtml(u) : '#';
-        list.innerHTML = items.slice(0, 20).map(item => `
-            <a href="${safeLink(item.link)}" target="_blank" class="news-card" rel="noopener noreferrer">
-                <img class="news-img" src="${escapeHtml(item.thumbnail || this._getNewsImage())}" alt="" loading="lazy"
-                     onerror="this.src='https://placehold.co/80x70/1a1a2e/00ff88?text=FX'">
-                <div class="news-content">
-                    <div class="news-source">${escapeHtml(item.source)}</div>
-                    <div class="news-title">${escapeHtml(item.title)}</div>
-                    <div class="news-time">${this._timeAgo(item.pubDate)}</div>
-                </div>
-            </a>`).join('');
-    },
-
-    _fallbackNews() {
-        const now = new Date().toISOString();
-        return [
-            {
-                title: 'آخرین اخبار و تحلیل‌های بازار فارکس را در FXStreet دنبال کنید',
-                link: 'https://www.fxstreet.com/news',
-                pubDate: now,
-                thumbnail: '',
-                source: 'FXStreet',
-                categories: 'forex market eurusd usd fed ecb news'
-            },
-            {
-                title: 'اخبار فارکس و بانک‌های مرکزی در Investing.com',
-                link: 'https://www.investing.com/news/forex-news',
-                pubDate: now,
-                thumbnail: '',
-                source: 'Investing.com',
-                categories: 'forex central bank rate decision usd eur gbp jpy'
-            },
-            {
-                title: 'خبرهای لحظه‌ای بازار ارز و طلا از ForexLive',
-                link: 'https://www.forexlive.com/',
-                pubDate: now,
-                thumbnail: '',
-                source: 'ForexLive',
-                categories: 'forex gold xau usd eur market'
-            }
-        ];
-    },
-
-    _getNewsImage() {
-        return 'https://placehold.co/80x70/1a1a2e/00ff88?text=FX';
-    },
-
-    _timeAgo(dateStr) {
-        const m = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
-        if (m < 1)  return 'لحظاتی پیش';
-        if (m < 60) return m + ' دقیقه پیش';
-        const h = Math.floor(m / 60);
-        if (h < 24) return h + ' ساعت پیش';
-        return Math.floor(h / 24) + ' روز پیش';
-    },
-
     // ─── نوار Refresh ────────────────────────────────────────
     startAutoRefresh() {
         clearInterval(this.refreshTimer);
         this.refreshTimer = setInterval(async () => {
             if (document.getElementById('marketView')?.style.display !== 'none') {
-                await Promise.allSettled([
-                    this.fetchMarketAnalysis(),
-                    this.fetchNews()
-                ]);
+                await this.fetchMarketAnalysis();
             }
         }, MARKET_CONFIG.MARKET_REFRESH_INTERVAL * 1000);
     },
